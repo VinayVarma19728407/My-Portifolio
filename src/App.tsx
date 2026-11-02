@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CosmicSpaceEngine } from './components/CosmicSpaceEngine';
+import { CosmicSpaceEngine, CosmicMode } from './components/CosmicSpaceEngine';
 import { IntroPortal } from './components/IntroPortal';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -13,17 +13,24 @@ import { LiveConsoleStream } from './components/LiveConsoleStream';
 
 export const App: React.FC = () => {
   const [portalEntered, setPortalEntered] = useState<boolean>(false);
-  const [isDiving, setIsDiving] = useState<boolean>(false);
+  const [cosmicMode, setCosmicMode] = useState<CosmicMode>('idle');
   const [activeSection, setActiveSection] = useState<string>('about');
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
 
   const handleStartDive = () => {
-    setIsDiving(true);
-    // Allow space dive animation with strings of golden & purple lights to run
+    // 1. First become completely blank for 300ms
+    setCosmicMode('blank');
+
     setTimeout(() => {
-      setPortalEntered(true);
-      setIsDiving(false);
-    }, 1600);
+      // 2. Space dive for around 2 seconds (2000ms) with golden & purple light strings
+      setCosmicMode('diving');
+
+      setTimeout(() => {
+        // 3. Enter portfolio & switch background to Black Hole sucking light inward
+        setPortalEntered(true);
+        setCosmicMode('blackhole');
+      }, 2000);
+    }, 300);
   };
 
   const handleSectionSwitch = (newSection: string) => {
@@ -45,12 +52,12 @@ export const App: React.FC = () => {
 
   return (
     <div className="portfolio-app space-theme">
-      {/* 3D Cosmic Space Engine with Golden & Purple Light Warp Trails */}
-      <CosmicSpaceEngine isDiving={isDiving} />
+      {/* 3D Cosmic Space Engine: Handles Blank -> 2s Golden/Purple Warp Dive -> Black Hole Sucking Light */}
+      <CosmicSpaceEngine mode={cosmicMode} />
 
-      {/* Grandeur Entrance Webpage / Space Dive */}
+      {/* Grandeur Entrance Webpage / Space Dive Trigger */}
       {!portalEntered && (
-        <IntroPortal isDiving={isDiving} onStartDive={handleStartDive} />
+        <IntroPortal isDiving={cosmicMode === 'diving' || cosmicMode === 'blank'} onStartDive={handleStartDive} />
       )}
 
       {/* Main Interactive System Workspace */}
