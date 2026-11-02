@@ -73,8 +73,8 @@ export const TypewriterExperienceCard: React.FC<TypewriterExperienceCardProps> =
                 if (curAch < achList.length) {
                   const targetText = achList[curAch];
                   if (curAchChar < targetText.length) {
-                    const partialText = targetText.substring(0, curAchChar + 4);
-                    curAchChar += 4;
+                    const partialText = targetText.substring(0, curAchChar + 8);
+                    curAchChar += 8;
                     const nextAcc = [...accumulated];
                     nextAcc[curAch] = partialText;
                     setTypedAchievements(nextAcc);

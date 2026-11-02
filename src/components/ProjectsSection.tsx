@@ -47,22 +47,16 @@ export const ProjectsSection: React.FC = () => {
             BOX-TO-TYPEWRITER SYNTHESIS: {Math.min(currentActiveIndex + 1, filteredProjects.length)} OF {filteredProjects.length} ACTIVE
           </span>
         </div>
-        {!isFastForward && (
-          <button
-            type="button"
-            className="fast-forward-btn"
-            onClick={() => setIsFastForward(true)}
-          >
-            ⏩ Reveal All Boxes Immediately
-          </button>
-        )}
       </div>
 
       {/* Projects Grid */}
-      <div className="projects-grid">
+      <div 
+        className="projects-grid"
+        onClick={() => setIsFastForward(true)}
+      >
         {filteredProjects.map((project: Project, index: number) => (
           <TypewriterProjectCard
-            key={project.id}
+            key={`${activeCategory}-${project.id}`}
             project={project}
             isActiveToCreate={index <= currentActiveIndex}
             isFastForward={isFastForward}

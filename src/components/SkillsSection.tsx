@@ -12,24 +12,12 @@ export const SkillsSection: React.FC = () => {
   };
 
   return (
-    <section id="skills" className="section-container" aria-labelledby="skills-heading">
-      <div className="creation-telemetry-bar">
-        <div className="telemetry-status">
-          <TerminalIcon size={14} />
-          <span>
-            BOX CREATION & TYPEWRITER SYNTHESIS: {Math.min(currentActiveIndex + 1, SKILL_CATEGORIES.length)} OF {SKILL_CATEGORIES.length}
-          </span>
-        </div>
-        {!isFastForward && (
-          <button
-            type="button"
-            className="fast-forward-btn"
-            onClick={() => setIsFastForward(true)}
-          >
-            ⏩ Reveal All Boxes Immediately
-          </button>
-        )}
-      </div>
+    <section
+      id="skills"
+      className="section-container"
+      aria-labelledby="skills-heading"
+      onClick={() => setIsFastForward(true)}
+    >
 
       <div className="skills-grid">
         {SKILL_CATEGORIES.map((cat, index) => (

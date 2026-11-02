@@ -57,8 +57,8 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
           let sumIdx = 0;
           const sumTimer = setInterval(() => {
             if (sumIdx < project.summary.length) {
-              setTypedSummary(project.summary.substring(0, sumIdx + 4));
-              sumIdx += 4;
+              setTypedSummary(project.summary.substring(0, sumIdx + 8));
+              sumIdx += 8;
             } else {
               clearInterval(sumTimer);
               setTypedSummary(project.summary);
@@ -92,11 +92,11 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
                   // Notify parent that this card finished so next card can create its box
                   onFinish();
                 }
-              }, 18);
+              }, 8);
             }
-          }, 14);
+          }, 7);
         }
-      }, 20);
+      }, 10);
     }, 100);
 
     return () => {

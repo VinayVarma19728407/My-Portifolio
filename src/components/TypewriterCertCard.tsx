@@ -54,8 +54,8 @@ export const TypewriterCertCard: React.FC<TypewriterCertCardProps> = ({
           let descIdx = 0;
           const descTimer = setInterval(() => {
             if (descIdx < cert.description.length) {
-              setTypedDesc(cert.description.substring(0, descIdx + 4));
-              descIdx += 4;
+              setTypedDesc(cert.description.substring(0, descIdx + 8));
+              descIdx += 8;
             } else {
               clearInterval(descTimer);
               setTypedDesc(cert.description);

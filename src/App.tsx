@@ -29,7 +29,7 @@ export const App: React.FC = () => {
         // 3. Enter portfolio & switch background to Two Colliding Galaxies
         setPortalEntered(true);
         setCosmicMode('galaxies');
-      }, 2000);
+      }, 1500);
     }, 350);
   };
 

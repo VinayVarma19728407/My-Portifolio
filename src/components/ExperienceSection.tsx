@@ -12,24 +12,12 @@ export const ExperienceSection: React.FC = () => {
   };
 
   return (
-    <section id="experience" className="section-container" aria-labelledby="experience-heading">
-      <div className="creation-telemetry-bar">
-        <div className="telemetry-status">
-          <TerminalIcon size={14} />
-          <span>
-            BOX CREATION & TYPEWRITER SYNTHESIS: {Math.min(currentActiveIndex + 1, EXPERIENCES.length)} OF {EXPERIENCES.length}
-          </span>
-        </div>
-        {!isFastForward && (
-          <button
-            type="button"
-            className="fast-forward-btn"
-            onClick={() => setIsFastForward(true)}
-          >
-            ⏩ Reveal All Boxes Immediately
-          </button>
-        )}
-      </div>
+    <section
+      id="experience"
+      className="section-container"
+      aria-labelledby="experience-heading"
+      onClick={() => setIsFastForward(true)}
+    >
 
       <div className="timeline-container">
         {EXPERIENCES.map((item, index) => (

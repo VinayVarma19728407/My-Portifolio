@@ -64,7 +64,7 @@ export const LiveConsoleStream: React.FC<LiveConsoleStreamProps> = ({
             // Delay slightly before mounting the children so card 0 creates fresh in front of user
             setTimeout(() => setStreamReady(true), 200);
           }
-        }, 18);
+        }, 9);
       }
     }, 14);
 
