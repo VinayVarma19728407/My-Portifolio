@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TechBackground } from './components/TechBackground';
+import { CosmicSpaceEngine } from './components/CosmicSpaceEngine';
 import { IntroPortal } from './components/IntroPortal';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -13,8 +13,18 @@ import { LiveConsoleStream } from './components/LiveConsoleStream';
 
 export const App: React.FC = () => {
   const [portalEntered, setPortalEntered] = useState<boolean>(false);
+  const [isDiving, setIsDiving] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>('about');
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
+
+  const handleStartDive = () => {
+    setIsDiving(true);
+    // Allow space dive animation with strings of golden & purple lights to run
+    setTimeout(() => {
+      setPortalEntered(true);
+      setIsDiving(false);
+    }, 1600);
+  };
 
   const handleSectionSwitch = (newSection: string) => {
     if (newSection === activeSection) return;
@@ -34,13 +44,13 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="portfolio-app">
-      {/* Background Interactive Cybernetic Canvas */}
-      <TechBackground />
+    <div className="portfolio-app space-theme">
+      {/* 3D Cosmic Space Engine with Golden & Purple Light Warp Trails */}
+      <CosmicSpaceEngine isDiving={isDiving} />
 
-      {/* Grandeur Entrance Webpage / Deep Tech Dive */}
+      {/* Grandeur Entrance Webpage / Space Dive */}
       {!portalEntered && (
-        <IntroPortal onEnter={() => setPortalEntered(true)} />
+        <IntroPortal isDiving={isDiving} onStartDive={handleStartDive} />
       )}
 
       {/* Main Interactive System Workspace */}
@@ -73,7 +83,7 @@ export const App: React.FC = () => {
               </div>
             )}
 
-            {/* 2. PROJECTS VIEW: Live Typewriter Stream */}
+            {/* 2. PROJECTS VIEW: Live Typewriter Stream + On-the-spot creation */}
             {activeSection === 'projects' && (
               <LiveConsoleStream
                 sectionKey="projects"
@@ -86,7 +96,7 @@ export const App: React.FC = () => {
               </LiveConsoleStream>
             )}
 
-            {/* 3. EXPERIENCE VIEW: Live Typewriter Stream */}
+            {/* 3. EXPERIENCE VIEW: Live Typewriter Stream + On-the-spot creation */}
             {activeSection === 'experience' && (
               <LiveConsoleStream
                 sectionKey="experience"
@@ -99,7 +109,7 @@ export const App: React.FC = () => {
               </LiveConsoleStream>
             )}
 
-            {/* 4. SKILLS VIEW: Live Typewriter Stream */}
+            {/* 4. SKILLS VIEW: Live Typewriter Stream + On-the-spot creation */}
             {activeSection === 'skills' && (
               <LiveConsoleStream
                 sectionKey="skills"
@@ -112,7 +122,7 @@ export const App: React.FC = () => {
               </LiveConsoleStream>
             )}
 
-            {/* 5. CERTIFICATIONS VIEW: Live Typewriter Stream */}
+            {/* 5. CERTIFICATIONS VIEW: Live Typewriter Stream + On-the-spot creation */}
             {activeSection === 'certifications' && (
               <LiveConsoleStream
                 sectionKey="certifications"
