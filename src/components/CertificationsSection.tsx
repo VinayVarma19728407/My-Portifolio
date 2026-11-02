@@ -8,10 +8,10 @@ export const CertificationsSection: React.FC = () => {
       <div className="section-header">
         <div className="section-eyebrow">Verified Credentials</div>
         <h2 id="certifications-heading" className="section-title">
-          Certifications & Industrial Badges
+          Certifications & Industrial Credentials
         </h2>
         <p className="section-description">
-          Formal credentials in Generative AI architectures, prompt engineering, and industrial database management systems.
+          Formal credentials in Artificial Intelligence foundations, Generative AI engineering, and industrial database systems.
         </p>
       </div>
 
@@ -43,22 +43,32 @@ export const CertificationsSection: React.FC = () => {
             <div className="cert-footer">
               <span className="cert-date">Issued: {cert.issueDate}</span>
               
-              {cert.verificationUrl ? (
-                <a
-                  href={cert.verificationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cert-verify-link"
-                  aria-label={`Verify ${cert.title} certificate on IBM Career Education Portal`}
-                >
-                  <span>Verify Credential</span>
-                  <ExternalLinkIcon size={14} />
-                </a>
-              ) : (
-                cert.credentialId && (
-                  <span className="cert-id-label">ID: {cert.credentialId}</span>
-                )
-              )}
+              <div className="cert-action-links">
+                {cert.verificationUrl && (
+                  <a
+                    href={cert.verificationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cert-verify-link"
+                    aria-label={`Verify ${cert.title} certificate online`}
+                  >
+                    <span>Verify</span>
+                    <ExternalLinkIcon size={13} />
+                  </a>
+                )}
+                {cert.pdfUrl && (
+                  <a
+                    href={cert.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cert-verify-link"
+                    aria-label={`View ${cert.title} PDF certificate`}
+                  >
+                    <span>View PDF</span>
+                    <ExternalLinkIcon size={13} />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}

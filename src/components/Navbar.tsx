@@ -19,8 +19,7 @@ export const Navbar: React.FC = () => {
       <div className="navbar-container">
         <a href="#about" className="navbar-brand" onClick={closeMenu}>
           <span className="brand-dot" aria-hidden="true"></span>
-          <span className="brand-text">Vinay Varma</span>
-          <span className="brand-tag">AIML & SE</span>
+          <span className="brand-text">Ganapathiraju Vinay Kumar Varma</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -36,7 +35,7 @@ export const Navbar: React.FC = () => {
 
         <div className="navbar-cta-group">
           <a href="#contact" className="btn btn-sm btn-primary">
-            Contact Me
+            Contact
           </a>
           
           {/* Mobile Menu Hamburger */}

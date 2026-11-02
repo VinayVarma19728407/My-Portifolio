@@ -15,7 +15,7 @@ export const Hero: React.FC = () => {
             </div>
 
             <h1 id="hero-name" className="hero-title">
-              Hi, I'm <span className="text-gradient">Vinay Kumar Varma</span>
+              Hi, I'm <span className="text-gradient">Ganapathiraju Vinay Kumar Varma</span>
             </h1>
 
             <p className="hero-subtitle">
@@ -23,9 +23,9 @@ export const Hero: React.FC = () => {
             </p>
 
             <p className="hero-bio">
-              I specialize in engineering scalable 3-tier web platforms, reinforcement learning schedulers, 
+              I specialize in engineering scalable 3-tier platforms, reinforcement learning schedulers, 
               and explainable AI systems. I combine practical industrial data engineering (RINL Vizag Steel Plant) 
-              with modern full-stack development and rigorous machine learning research.
+              with modern software development and rigorous machine learning research.
             </p>
 
             <div className="hero-meta-row">
@@ -52,7 +52,7 @@ export const Hero: React.FC = () => {
             {/* Social Links Bar */}
             <div className="hero-socials" aria-label="Professional Profiles">
               <a
-                href="https://github.com/VinayVarma"
+                href="https://github.com/VinayVarma19728407"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-pill"
@@ -62,7 +62,7 @@ export const Hero: React.FC = () => {
                 <span>GitHub</span>
               </a>
               <a
-                href="https://linkedin.com/in/VinayVarma"
+                href="https://www.linkedin.com/feed/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-pill"
@@ -72,7 +72,7 @@ export const Hero: React.FC = () => {
                 <span>LinkedIn</span>
               </a>
               <a
-                href="https://leetcode.com/u/VinayVarma"
+                href="https://leetcode.com/u/Vinay_Kumar_Varma/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-pill"
@@ -82,9 +82,11 @@ export const Hero: React.FC = () => {
                 <span>LeetCode</span>
               </a>
               <a
-                href="mailto:gvkvarma99999@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=gvkvarma99999@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="social-pill"
-                aria-label="Send email to Vinay Varma"
+                aria-label="Send email via Gmail"
               >
                 <MailIcon size={18} />
                 <span>Email</span>

@@ -1,8 +1,8 @@
 export interface Project {
   id: string;
   title: string;
-  category: 'Full-Stack' | 'AI & Machine Learning' | 'Systems & Web';
-  status: 'Completed' | 'Ongoing';
+  category: 'AI & Machine Learning' | 'Software Engineering' | 'Systems & Web';
+  status: 'Completed';
   featured: boolean;
   tagline: string;
   summary: string;
@@ -17,8 +17,8 @@ export const PROJECTS: Project[] = [
   {
     id: 'schemesetu',
     title: 'SchemeSetu',
-    category: 'Full-Stack',
-    status: 'Ongoing',
+    category: 'Software Engineering',
+    status: 'Completed',
     featured: true,
     tagline: 'Centralized Welfare Discovery & Dynamic Eligibility Engine',
     summary:
@@ -31,16 +31,16 @@ export const PROJECTS: Project[] = [
     metrics: [
       { label: 'Architecture', value: '3-Tier' },
       { label: 'Security', value: 'JWT + REST' },
-      { label: 'Delivery', value: 'Full-Stack' }
+      { label: 'Status', value: 'Completed' }
     ],
-    technologies: ['React.js', 'Node.js', 'Express.js', 'REST APIs', 'JWT', 'Git', 'CSS3'],
-    githubUrl: 'https://github.com/VinayVarma/SchemeSetu'
+    technologies: ['React.js', 'Node.js', 'Express.js', 'REST APIs', 'JWT', 'Git'],
+    githubUrl: 'https://github.com/VinayVarma19728407'
   },
   {
     id: 'adaptive-rl-cpu-scheduler',
     title: 'Adaptive RL CPU Scheduler',
     category: 'AI & Machine Learning',
-    status: 'Ongoing',
+    status: 'Completed',
     featured: true,
     tagline: 'Cluster Workload Prediction & PPO Reinforcement Learning Scheduler',
     summary:
@@ -53,10 +53,10 @@ export const PROJECTS: Project[] = [
     metrics: [
       { label: 'Dataset', value: '1M+ Traces' },
       { label: 'Peak R²', value: '0.8899' },
-      { label: 'RL Algorithm', value: 'PPO Agent' }
+      { label: 'RL Agent', value: 'PPO Model' }
     ],
     technologies: ['Python', 'Pandas', 'Scikit-learn', 'CatBoost', 'Reinforcement Learning', 'NumPy'],
-    githubUrl: 'https://github.com/VinayVarma/Adaptive-RL-CPU-Scheduler'
+    githubUrl: 'https://github.com/VinayVarma19728407'
   },
   {
     id: 'smart-health',
@@ -78,7 +78,7 @@ export const PROJECTS: Project[] = [
       { label: 'Safety', value: 'Red-Flag Gated' }
     ],
     technologies: ['React.js', 'Node.js', 'Express.js', 'Groq API', 'LLaMA 3', 'REST APIs'],
-    githubUrl: 'https://github.com/VinayVarma/Smart-Health-Recommendation-System'
+    githubUrl: 'https://github.com/VinayVarma19728407'
   },
   {
     id: 'portfolio-v1',
@@ -88,18 +88,18 @@ export const PROJECTS: Project[] = [
     featured: true,
     tagline: 'Static, Accessible, Production-Grade Engineering Showcase',
     summary:
-      'The source codebase for this portfolio: built strictly as a static application with zero bloated framework abstractions, optimized for instant Vercel edge deployment with 100/100 Lighthouse performance metrics.',
+      'The source codebase for this portfolio: built strictly as a static application with zero bloated framework abstractions, optimized for instant Vercel edge deployment with high-performance metrics.',
     highlights: [
       'Handcrafted semantic HTML5 and WCAG 2.1 AA accessible design with keyboard jump links and ARIA landmarks.',
       'Type-safe data-driven architecture separating content models from view layers for effortless maintenance.',
       'Zero unnecessary third-party runtime bundles, achieving sub-second Largest Contentful Paint (LCP).'
     ],
     metrics: [
-      { label: 'Lighthouse', value: '100 / 100' },
-      { label: 'Bundle', value: '<50KB Gzip' },
-      { label: 'Deployment', value: 'Vercel Edge' }
+      { label: 'Performance', value: 'Ultra Fast' },
+      { label: 'Architecture', value: 'Static' },
+      { label: 'Accessibility', value: 'WCAG 2.1 AA' }
     ],
-    technologies: ['React.js', 'TypeScript', 'Vite', 'Modern CSS', 'Vercel'],
-    githubUrl: 'https://github.com/VinayVarma/My-Portfolio'
+    technologies: ['React.js', 'TypeScript', 'Vite', 'Modern CSS'],
+    githubUrl: 'https://github.com/VinayVarma19728407'
   }
 ];

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PROJECTS, Project } from '../data/projects';
 import { GithubIcon, ExternalLinkIcon } from './Icons';
 
-type FilterCategory = 'All' | 'Full-Stack' | 'AI & Machine Learning' | 'Systems & Web';
+type FilterCategory = 'All' | 'AI & Machine Learning' | 'Software Engineering' | 'Systems & Web';
 
 export const ProjectsSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<FilterCategory>('All');
@@ -19,13 +19,13 @@ export const ProjectsSection: React.FC = () => {
           Featured Projects
         </h2>
         <p className="section-description">
-          Core engineering initiatives spanning distributed machine learning pipelines, full-stack government services,
-          and context-aware LLM architectures.
+          Core engineering initiatives spanning distributed machine learning pipelines, government welfare architectures,
+          and context-aware LLM systems.
         </p>
 
         {/* Category Filter Tabs */}
         <div className="filter-tabs" role="tablist" aria-label="Project categories">
-          {(['All', 'Full-Stack', 'AI & Machine Learning', 'Systems & Web'] as FilterCategory[]).map((cat) => (
+          {(['All', 'AI & Machine Learning', 'Software Engineering', 'Systems & Web'] as FilterCategory[]).map((cat) => (
             <button
               key={cat}
               role="tab"
@@ -50,7 +50,7 @@ export const ProjectsSection: React.FC = () => {
             {/* Card Header */}
             <div className="project-card-header">
               <div className="project-badge-group">
-                <span className={`status-badge ${project.status.toLowerCase()}`}>
+                <span className="status-badge completed">
                   {project.status}
                 </span>
                 <span className="category-badge">{project.category}</span>
@@ -62,7 +62,7 @@ export const ProjectsSection: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="project-icon-link"
-                  aria-label={`View ${project.title} source code on GitHub`}
+                  aria-label={`View ${project.title} on GitHub`}
                   title="View on GitHub"
                 >
                   <GithubIcon size={18} />

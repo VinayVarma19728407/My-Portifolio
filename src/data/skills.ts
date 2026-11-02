@@ -1,57 +1,43 @@
 export interface SkillCategory {
   category: string;
   description: string;
-  skills: { name: string; proficiency?: string; tag?: string }[];
+  skills: { name: string; tag?: string }[];
 }
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     category: 'Programming Languages',
-    description: 'Core languages used for systems programming, backend engineering, and scientific computing.',
+    description: 'Core languages used for systems programming, data analysis, and algorithm implementation.',
     skills: [
       { name: 'Python', tag: 'Data & ML' },
       { name: 'Java', tag: 'Core & OOP' },
       { name: 'C++', tag: 'Algorithms' },
-      { name: 'JavaScript (ES6+)', tag: 'Web' },
+      { name: 'JavaScript', tag: 'Web' },
       { name: 'SQL (Oracle & PostgreSQL)', tag: 'Databases' }
     ]
   },
   {
-    category: 'Full-Stack Web Development',
-    description: 'Frameworks, runtimes, and protocols for building performant, accessible digital products.',
-    skills: [
-      { name: 'React.js', tag: 'Frontend' },
-      { name: 'Node.js', tag: 'Runtime' },
-      { name: 'Express.js', tag: 'Backend' },
-      { name: 'REST APIs', tag: 'Architecture' },
-      { name: 'JWT Authentication', tag: 'Security' },
-      { name: 'HTML5 & Semantic Web', tag: 'Markup' },
-      { name: 'CSS3 & Responsive Design', tag: 'Styling' }
-    ]
-  },
-  {
-    category: 'Machine Learning & Data Systems',
-    description: 'Libraries and architectures for predictive modeling, reinforcement learning, and large-scale data analysis.',
+    category: 'Machine Learning & AI Systems',
+    description: 'Frameworks and architectures for predictive modeling, reinforcement learning, and LLM applications.',
     skills: [
       { name: 'TensorFlow', tag: 'Deep Learning' },
-      { name: 'PyTorch', tag: 'Deep Learning' },
       { name: 'CatBoost', tag: 'Gradient Boosting' },
       { name: 'Scikit-learn', tag: 'ML Pipelines' },
-      { name: 'Pandas & NumPy', tag: 'Data Wrangling' },
+      { name: 'Pandas & NumPy', tag: 'Data Processing' },
       { name: 'Reinforcement Learning (PPO)', tag: 'Optimization' },
       { name: 'Large Language Models (Groq / LLaMA 3)', tag: 'GenAI' }
     ]
   },
   {
-    category: 'Developer Tooling & Core CS',
-    description: 'Engineering foundations, database administration, and collaboration tools.',
+    category: 'Developer Tooling & Core CS Fundamentals',
+    description: 'Engineering foundations, database administration, and software development practices.',
     skills: [
-      { name: 'Data Structures & Algorithms', tag: 'Problem Solving' },
-      { name: 'Object-Oriented Programming', tag: 'Architecture' },
-      { name: 'Database Management Systems (DBMS)', tag: 'Data' },
-      { name: 'Git & GitHub', tag: 'VCS' },
-      { name: 'Oracle SQL*Loader', tag: 'Batch ETL' },
-      { name: 'Vercel Deployment', tag: 'CI/CD' }
+      { name: 'Data Structures & Algorithms', tag: 'Core CS' },
+      { name: 'Object-Oriented Programming (OOP)', tag: 'Architecture' },
+      { name: 'Database Management Systems (DBMS)', tag: 'Data Engineering' },
+      { name: 'Git & GitHub', tag: 'Version Control' },
+      { name: 'Oracle SQL*Loader', tag: 'Industrial ETL' },
+      { name: 'Software Engineering & REST APIs', tag: 'Design' }
     ]
   }
 ];

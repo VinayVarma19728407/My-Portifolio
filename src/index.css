@@ -1057,6 +1057,14 @@ body {
   border-top: 1px solid var(--border-subtle);
   font-size: 0.78rem;
   color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cert-action-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .cert-verify-link {
@@ -1066,6 +1074,7 @@ body {
   color: var(--accent-cyan);
   font-weight: 600;
   text-decoration: none;
+  font-size: 0.82rem;
   transition: color var(--transition-fast);
 }
 
@@ -1079,7 +1088,7 @@ body {
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 

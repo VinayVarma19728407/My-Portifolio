@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
 
           <div className="footer-links-group">
             <a
-              href="https://github.com/VinayVarma"
+              href="https://github.com/VinayVarma19728407"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Profile"
@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
               <GithubIcon size={18} />
             </a>
             <a
-              href="https://linkedin.com/in/VinayVarma"
+              href="https://www.linkedin.com/feed/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn Profile"
@@ -39,7 +39,7 @@ export const Footer: React.FC = () => {
               <LinkedinIcon size={18} />
             </a>
             <a
-              href="https://leetcode.com/u/VinayVarma"
+              href="https://leetcode.com/u/Vinay_Kumar_Varma/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LeetCode Profile"
@@ -52,7 +52,7 @@ export const Footer: React.FC = () => {
 
         <div className="footer-bottom">
           <p className="footer-copy">
-            © {currentYear} Ganapathiraju Vinay Kumar Varma. Static architecture built for Vercel.
+            © {currentYear} Ganapathiraju Vinay Kumar Varma. All rights reserved.
           </p>
           <button
             type="button"
