@@ -19,6 +19,8 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
   const [typingStarted, setTypingStarted] = useState<boolean>(false);
   const [typedTitle, setTypedTitle] = useState<string>('');
   const [typedSummary, setTypedSummary] = useState<string>('');
+  const [typedHighlights, setTypedHighlights] = useState<string[]>([]);
+  const [activeHighlightIndex, setActiveHighlightIndex] = useState<number>(0);
   const [typingComplete, setTypingComplete] = useState<boolean>(false);
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
       setTypingStarted(true);
       setTypedTitle(project.title);
       setTypedSummary(project.summary);
+      setTypedHighlights(project.highlights);
       setTypingComplete(true);
       onFinish();
       return;
@@ -59,19 +62,47 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
             } else {
               clearInterval(sumTimer);
               setTypedSummary(project.summary);
-              setTypingComplete(true);
-              // Notify parent that this card finished so next card can create its box
-              onFinish();
+
+              // Now progressively type each Architectural Highlight bullet!
+              let currentHl = 0;
+              let currentHlChar = 0;
+              const hlList = project.highlights;
+              const accumulated: string[] = [];
+
+              const hlTimer = setInterval(() => {
+                if (currentHl < hlList.length) {
+                  const targetHlText = hlList[currentHl];
+                  if (currentHlChar < targetHlText.length) {
+                    const partialText = targetHlText.substring(0, currentHlChar + 3);
+                    currentHlChar += 3;
+                    const nextAccumulated = [...accumulated];
+                    nextAccumulated[currentHl] = partialText;
+                    setTypedHighlights(nextAccumulated);
+                    setActiveHighlightIndex(currentHl);
+                  } else {
+                    accumulated[currentHl] = targetHlText;
+                    setTypedHighlights([...accumulated]);
+                    currentHl++;
+                    currentHlChar = 0;
+                  }
+                } else {
+                  clearInterval(hlTimer);
+                  setTypedHighlights(project.highlights);
+                  setTypingComplete(true);
+                  // Notify parent that this card finished so next card can create its box
+                  onFinish();
+                }
+              }, 18);
             }
-          }, 18);
+          }, 14);
         }
-      }, 25);
+      }, 20);
     }, 100);
 
     return () => {
       clearTimeout(waitTimer);
     };
-  }, [isActiveToCreate, isFastForward, project.title, project.summary]);
+  }, [isActiveToCreate, isFastForward, project.title, project.summary, project.highlights]);
 
   if (!boxCreated && !isFastForward) {
     return (
@@ -123,8 +154,8 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
         )}
       </div>
 
-      {/* Title & Tagline being typed inside the created box */}
-      {typingStarted && (
+      {/* Content being typed inside the created box */}
+      {typingStarted ? (
         <>
           <h3 id={`project-title-${project.id}`} className="project-title">
             {typedTitle}
@@ -146,12 +177,17 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
             </div>
           )}
 
-          {/* Highlights */}
+          {/* Key Architectural Highlights being typed live */}
           <div className="project-highlights-block">
             <span className="highlights-title">Key Architectural Highlights:</span>
             <ul className="project-highlights-list">
-              {project.highlights.map((highlight, idx) => (
-                <li key={idx}>{highlight}</li>
+              {typedHighlights.map((highlight, idx) => (
+                <li key={idx}>
+                  {highlight}
+                  {!typingComplete && activeHighlightIndex === idx && (
+                    <span className="blinking-cursor">█</span>
+                  )}
+                </li>
               ))}
             </ul>
           </div>
@@ -167,10 +203,8 @@ export const TypewriterProjectCard: React.FC<TypewriterProjectCardProps> = ({
             </div>
           </div>
         </>
-      )}
-
-      {/* Empty Box State (Waiting for 100ms before typing begins) */}
-      {!typingStarted && (
+      ) : (
+        /* Empty Box State (Waiting for 100ms before typing begins) */
         <div className="empty-box-placeholder">
           <span className="empty-box-text">
             BOX CREATED // WAITING 100ms // INITIALIZING TYPEWRITER STREAM...

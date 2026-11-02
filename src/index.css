@@ -2417,3 +2417,52 @@ body {
   border-color: var(--border-medium) !important;
   transition: all var(--transition-normal);
 }
+
+
+/* ==========================================================================
+   About Page Sequential Timing & Photo Placeholder
+   ========================================================================== */
+
+.photo-card-placeholder {
+  border: 1px dashed rgba(251, 191, 36, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 6, 26, 0.35);
+  min-height: 380px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+}
+
+.photo-placeholder-text {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: #fbbf24;
+  letter-spacing: 0.06em;
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+.card-snap-pill {
+  animation: pillPop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pillPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.stream-payload-loading {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.payload-loading-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #c084fc;
+  letter-spacing: 0.08em;
+  animation: pulse 1s infinite;
+}

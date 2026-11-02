@@ -15,14 +15,14 @@ interface WarpStar {
   size: number;
 }
 
-interface InfallingLightParticle {
+interface InfallingFilament {
   angle: number;
-  distance: number;
+  radius: number;
   speed: number;
-  radialSpeed: number;
+  fallSpeed: number;
+  width: number;
   color: string;
-  size: number;
-  tailLength: number;
+  length: number;
 }
 
 export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) => {
@@ -45,48 +45,43 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
     };
     window.addEventListener('resize', handleResize);
 
-    // Golden & Purple color palettes
-    const goldColors = ['#ffd700', '#fbbf24', '#f59e0b', '#fef08a'];
-    const purpleColors = ['#c084fc', '#a855f7', '#8b5cf6', '#e879f9'];
-    const cosmicColors = [...goldColors, ...purpleColors, '#ffffff'];
+    // Warp Stars for the 2-second Space Dive
+    const goldTones = ['#ffd700', '#fbbf24', '#f59e0b', '#fef08a'];
+    const purpleTones = ['#c084fc', '#a855f7', '#8b5cf6', '#e879f9'];
+    const warpColors = [...goldTones, ...purpleTones, '#ffffff'];
 
-    // 1. Warp Stars for Space Dive
     const warpStars: WarpStar[] = [];
-    const warpCount = 500;
-    for (let i = 0; i < warpCount; i++) {
+    for (let i = 0; i < 500; i++) {
       warpStars.push({
         x: (Math.random() - 0.5) * width * 2.5,
         y: (Math.random() - 0.5) * height * 2.5,
         z: Math.random() * 1000 + 1,
         pz: 1000,
-        color: cosmicColors[Math.floor(Math.random() * cosmicColors.length)],
+        color: warpColors[Math.floor(Math.random() * warpColors.length)],
         size: Math.random() * 2 + 0.8,
       });
     }
 
-    // 2. Black Hole Infalling Light Streams
-    const infallingParticles: InfallingLightParticle[] = [];
-    const particleCount = 280;
-
-    for (let i = 0; i < particleCount; i++) {
-      const isGold = Math.random() > 0.45;
-      infallingParticles.push({
+    // Infalling light filaments being sucked into Interstellar Black Hole
+    const filaments: InfallingFilament[] = [];
+    const filamentColors = ['#fde047', '#fbbf24', '#f59e0b', '#fb923c', '#c084fc', '#a855f7'];
+    for (let i = 0; i < 220; i++) {
+      filaments.push({
         angle: Math.random() * Math.PI * 2,
-        distance: Math.random() * 550 + 40,
-        speed: (Math.random() * 0.025 + 0.015),
-        radialSpeed: Math.random() * 1.4 + 0.6,
-        color: isGold
-          ? goldColors[Math.floor(Math.random() * goldColors.length)]
-          : purpleColors[Math.floor(Math.random() * purpleColors.length)],
-        size: Math.random() * 2.2 + 0.8,
-        tailLength: Math.random() * 14 + 6,
+        radius: Math.random() * 320 + 70,
+        speed: Math.random() * 0.03 + 0.015,
+        fallSpeed: Math.random() * 0.9 + 0.4,
+        width: Math.random() * 2.5 + 1,
+        color: filamentColors[Math.floor(Math.random() * filamentColors.length)],
+        length: Math.random() * 0.35 + 0.15,
       });
     }
 
     let diveSpeed = 1.0;
+    let accretionRotation = 0;
 
     const render = () => {
-      // PHASE 1: PURE BLANK (300ms)
+      // 1. PURE BLANK PHASE (300ms)
       if (mode === 'blank') {
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, width, height);
@@ -94,7 +89,7 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
         return;
       }
 
-      // PHASE 2: SPACE DIVE (Intense Strings of Golden and Purple Lights)
+      // 2. SPACE DIVE (2 Seconds Strings of Golden & Purple Lights)
       if (mode === 'diving') {
         ctx.fillStyle = 'rgba(2, 1, 8, 0.28)';
         ctx.fillRect(0, 0, width, height);
@@ -138,7 +133,7 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
           }
         }
 
-        // Intense expanding portal warp rings
+        // Relativistic golden and purple shock rings
         const ringTime = Date.now() * 0.004;
         for (let r = 0; r < 3; r++) {
           const radius = ((ringTime + r * 1.5) * 260) % (width * 0.9);
@@ -153,107 +148,134 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
         return;
       }
 
-      // PHASE 3: ENTERED PORTFOLIO (Cosmic Background with Black Hole Sucking Light)
-      // Base deep space canvas
+      // 3. ENTERED PORTFOLIO: INTERSTELLAR "GARGANTUA" BLACK HOLE
       ctx.fillStyle = 'rgba(2, 2, 7, 0.88)';
       ctx.fillRect(0, 0, width, height);
 
-      // Black Hole position in space (placed gracefully in depth)
-      const bhX = width > 900 ? width * 0.78 : width * 0.5;
-      const bhY = width > 900 ? height * 0.42 : height * 0.28;
-      const eventHorizonRadius = width > 900 ? 55 : 42;
+      // Black hole position
+      const bhX = width > 992 ? width * 0.76 : width * 0.5;
+      const bhY = width > 992 ? height * 0.42 : height * 0.26;
+      const R = width > 992 ? 65 : 48; // Event Horizon Radius
 
-      // 1. Distant stationary background stars
-      for (let i = 0; i < 90; i++) {
+      // Stationary distant stars
+      for (let i = 0; i < 70; i++) {
         const star = warpStars[i];
         ctx.beginPath();
-        ctx.arc((star.x + width) % width, (star.y + height) % height, star.size * 0.7, 0, Math.PI * 2);
+        ctx.arc((star.x + width) % width, (star.y + height) % height, star.size * 0.65, 0, Math.PI * 2);
         ctx.fillStyle = star.color;
-        ctx.globalAlpha = 0.4;
+        ctx.globalAlpha = 0.35;
         ctx.fill();
         ctx.globalAlpha = 1.0;
       }
 
-      // 2. Gravitational Accretion Disk Glow (Golden & Purple)
-      const diskGrad = ctx.createRadialGradient(bhX, bhY, eventHorizonRadius * 0.8, bhX, bhY, eventHorizonRadius * 5.5);
-      diskGrad.addColorStop(0, 'rgba(0, 0, 0, 1)');
-      diskGrad.addColorStop(0.18, 'rgba(251, 191, 36, 0.22)'); // gold photon ring
-      diskGrad.addColorStop(0.45, 'rgba(168, 85, 247, 0.16)'); // purple accretion glow
-      diskGrad.addColorStop(0.85, 'rgba(124, 58, 237, 0.05)');
-      diskGrad.addColorStop(1, 'transparent');
+      accretionRotation += 0.015;
 
-      ctx.fillStyle = diskGrad;
+      // INTERSTELLAR ACCRETION DISK GRAVITATIONAL LENSING:
+      // (1) Upper Lensed Arch (The back of the disk bent over the black hole)
+      ctx.save();
+      ctx.translate(bhX, bhY);
+
+      // Upper Arch
       ctx.beginPath();
-      ctx.arc(bhX, bhY, eventHorizonRadius * 5.5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.ellipse(0, -R * 0.15, R * 2.5, R * 1.6, 0, Math.PI, 0);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.38)';
+      ctx.lineWidth = R * 0.42;
+      ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 24;
+      ctx.stroke();
 
-      // 3. Swirling Infalling Light Streams being sucked into the Black Hole
-      for (let i = 0; i < infallingParticles.length; i++) {
-        const p = infallingParticles[i];
+      ctx.beginPath();
+      ctx.ellipse(0, -R * 0.15, R * 2.3, R * 1.45, 0, Math.PI, 0);
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.7)';
+      ctx.lineWidth = R * 0.18;
+      ctx.stroke();
 
-        // Angular movement (orbiting inward)
-        p.angle += p.speed;
-        // Radial movement (being sucked inward by gravity)
-        // Stronger pull as it gets closer
-        const gravity = (180 / (p.distance + 30));
-        p.distance -= p.radialSpeed * (0.8 + gravity * 0.35);
+      // Lower Lensed Arch (The bottom reflection)
+      ctx.beginPath();
+      ctx.ellipse(0, R * 0.15, R * 2.4, R * 1.5, 0, 0, Math.PI);
+      ctx.strokeStyle = 'rgba(217, 119, 6, 0.32)';
+      ctx.lineWidth = R * 0.35;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
 
-        // Respawn particle at outer edge once swallowed by event horizon
-        if (p.distance <= eventHorizonRadius) {
-          p.distance = Math.random() * 450 + 200;
-          p.angle = Math.random() * Math.PI * 2;
-          p.speed = Math.random() * 0.025 + 0.015;
+      // (2) Swirling Light Infalling Streams (Being sucked inward)
+      for (let i = 0; i < filaments.length; i++) {
+        const f = filaments[i];
+        f.angle += f.speed;
+        // Gravitational pull increases sharply near horizon
+        const pull = 1 + (R * 2) / (f.radius + 10);
+        f.radius -= f.fallSpeed * pull * 0.5;
+
+        // Reset once crossing the event horizon
+        if (f.radius <= R * 1.05) {
+          f.radius = Math.random() * 260 + R * 2.2;
+          f.angle = Math.random() * Math.PI * 2;
         }
 
-        // Elliptical accretion distortion (tilted view of the black hole disk)
-        const tilt = 0.55; // vertical foreshortening
-        const px = bhX + Math.cos(p.angle) * p.distance;
-        const py = bhY + Math.sin(p.angle) * p.distance * tilt;
+        const startX = Math.cos(f.angle) * f.radius;
+        const startY = Math.sin(f.angle) * (f.radius * 0.28);
 
-        // Draw light streak trailing into the gravitational vortex
-        const tailAngle = p.angle - p.speed * p.tailLength;
-        const tailDist = p.distance + p.radialSpeed * 4;
-        const tx = bhX + Math.cos(tailAngle) * tailDist;
-        const ty = bhY + Math.sin(tailAngle) * tailDist * tilt;
+        const endAngle = f.angle + f.length;
+        const endRadius = f.radius - 8;
+        const endX = Math.cos(endAngle) * endRadius;
+        const endY = Math.sin(endAngle) * (endRadius * 0.28);
 
         ctx.beginPath();
-        ctx.moveTo(tx, ty);
-        ctx.lineTo(px, py);
-        ctx.strokeStyle = p.color;
-        // Light heats up and gets brighter near event horizon
-        const proximityAlpha = Math.min((p.distance - eventHorizonRadius) / 250, 1);
-        ctx.globalAlpha = 0.2 + (1 - proximityAlpha) * 0.8;
-        ctx.lineWidth = p.size * (1 + (1 - proximityAlpha) * 1.5);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = f.color;
+        // Doppler effect: brighter on left (approaching) side
+        const doppler = Math.cos(f.angle) < 0 ? 0.9 : 0.4;
+        ctx.globalAlpha = doppler;
+        ctx.lineWidth = f.width;
         ctx.stroke();
         ctx.globalAlpha = 1.0;
       }
 
-      // 4. Relativistic Photon Ring (Glowing border around event horizon)
+      // (3) Front Equatorial Accretion Disk (Cutting directly across the middle)
       ctx.beginPath();
-      ctx.arc(bhX, bhY, eventHorizonRadius + 3, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
-      ctx.lineWidth = 3;
+      ctx.ellipse(0, 0, R * 3.4, R * 0.48, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.18)';
+      ctx.fill();
+
+      // Intense central equatorial light bar
+      const diskGrad = ctx.createLinearGradient(-R * 3, 0, R * 3, 0);
+      diskGrad.addColorStop(0, 'rgba(168, 85, 247, 0.1)');
+      diskGrad.addColorStop(0.3, 'rgba(254, 240, 138, 0.85)'); // Relativistic beaming (bright side)
+      diskGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.9)');
+      diskGrad.addColorStop(0.8, 'rgba(245, 158, 11, 0.5)');
+      diskGrad.addColorStop(1, 'rgba(168, 85, 247, 0.1)');
+
+      ctx.beginPath();
+      ctx.ellipse(0, 0, R * 3.1, R * 0.22, 0, 0, Math.PI * 2);
+      ctx.fillStyle = diskGrad;
       ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 20;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // (4) Photosphere Glow Ring (The glowing edge of the black hole)
+      ctx.beginPath();
+      ctx.arc(0, 0, R * 1.06, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.95)';
+      ctx.lineWidth = 3.5;
+      ctx.shadowColor = '#fde047';
       ctx.shadowBlur = 18;
       ctx.stroke();
       ctx.shadowBlur = 0;
 
+      // (5) The Pure Black Event Horizon (The central shadow of Gargantua)
       ctx.beginPath();
-      ctx.arc(bhX, bhY, eventHorizonRadius + 7, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(168, 85, 247, 0.6)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // 5. The Event Horizon (Pitch Black Singularity)
-      ctx.beginPath();
-      ctx.arc(bhX, bhY, eventHorizonRadius, 0, Math.PI * 2);
+      ctx.arc(0, 0, R, 0, Math.PI * 2);
       ctx.fillStyle = '#000000';
       ctx.fill();
 
-      // Gravitational lens label (subtle HUD identifier)
+      // Telemetry badge
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(251, 191, 36, 0.5)';
-      ctx.fillText('SINGULARITY // GRAVITATIONAL_LENSING', bhX - 110, bhY + eventHorizonRadius + 24);
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
+      ctx.fillText('GARGANTUA // EVENT HORIZON', -75, R + 34);
+
+      ctx.restore();
 
       animId = requestAnimationFrame(render);
     };

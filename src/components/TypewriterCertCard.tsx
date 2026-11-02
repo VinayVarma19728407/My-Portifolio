@@ -62,9 +62,9 @@ export const TypewriterCertCard: React.FC<TypewriterCertCardProps> = ({
               setTypingComplete(true);
               onFinish();
             }
-          }, 16);
+          }, 14);
         }
-      }, 22);
+      }, 20);
     }, 100);
 
     return () => {

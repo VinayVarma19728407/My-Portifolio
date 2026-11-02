@@ -61,12 +61,12 @@ export const LiveConsoleStream: React.FC<LiveConsoleStreamProps> = ({
           } else {
             clearInterval(titleInterval);
             setIsTypingTitle(false);
-            // Delay slightly before streaming contents
-            setTimeout(() => setStreamReady(true), 150);
+            // Delay slightly before mounting the children so card 0 creates fresh in front of user
+            setTimeout(() => setStreamReady(true), 200);
           }
-        }, 22);
+        }, 18);
       }
-    }, 18);
+    }, 14);
 
     return () => {
       clearInterval(cmdInterval);
@@ -106,9 +106,9 @@ export const LiveConsoleStream: React.FC<LiveConsoleStreamProps> = ({
               type="button"
               onClick={handleInstantReveal}
               className="skip-typing-btn"
-              title="Skip typing animation"
+              title="Skip terminal typing"
             >
-              Skip Animation ⏭
+              Skip Terminal ⏭
             </button>
           )}
         </div>
@@ -142,7 +142,7 @@ export const LiveConsoleStream: React.FC<LiveConsoleStreamProps> = ({
             <div className="stream-status-row">
               <span className="status-success">
                 <CheckIcon size={14} />
-                <span>STREAM LOADED: 100% [READY]</span>
+                <span>STREAM BUFFER: INITIALIZED [PROCEEDING TO BLOCK SYNTHESIS]</span>
               </span>
             </div>
           )}
@@ -161,10 +161,18 @@ export const LiveConsoleStream: React.FC<LiveConsoleStreamProps> = ({
         <p className="stream-live-subtitle">{sectionSubtitle}</p>
       </div>
 
-      {/* Actual Data Payload (revealed smoothly) */}
-      <div className={`stream-payload ${streamReady ? 'payload-visible' : 'payload-hidden'}`}>
-        {children}
-      </div>
+      {/* Actual Data Payload: ONLY MOUNTED WHEN STREAM IS READY SO CARD 0 IS VISIBLE FROM 0ms */}
+      {streamReady ? (
+        <div className="stream-payload payload-visible">
+          {children}
+        </div>
+      ) : (
+        <div className="stream-payload-loading">
+          <span className="payload-loading-text">
+            [SYNCHRONIZING REPOSITORY PIPELINE...]
+          </span>
+        </div>
+      )}
 
       {/* Bottom Return Button */}
       {streamReady && (
