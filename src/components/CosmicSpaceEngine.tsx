@@ -139,7 +139,7 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
     }
 
     let diveSpeed = 1.0;
-    let collisionTime = 0;
+    
 
     const render = () => {
       // 1. PURE BLANK SCREEN PHASE

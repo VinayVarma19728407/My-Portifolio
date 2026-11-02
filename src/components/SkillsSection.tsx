@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SKILL_CATEGORIES } from '../data/skills';
-import { TerminalIcon } from './Icons';
 import { TypewriterSkillCard } from './TypewriterSkillCard';
 
 export const SkillsSection: React.FC = () => {

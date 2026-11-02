@@ -5,7 +5,7 @@ import { TypewriterCertCard } from './TypewriterCertCard';
 
 export const CertificationsSection: React.FC = () => {
   const [currentActiveIndex, setCurrentActiveIndex] = useState<number>(0);
-  const [isFastForward, setIsFastForward] = useState<boolean>(false);
+  const [isFastForward] = useState<boolean>(false);
   const [isAllComplete, setIsAllComplete] = useState<boolean>(false);
 
   const handleNextCard = (index: number) => {
@@ -16,11 +16,7 @@ export const CertificationsSection: React.FC = () => {
     }
   };
 
-  const handleFastForward = () => {
-    setIsFastForward(true);
-    setIsAllComplete(true);
-    setCurrentActiveIndex(CERTIFICATIONS.length);
-  };
+  
 
   return (
     <section id="certifications" className="section-container" aria-labelledby="certifications-heading">

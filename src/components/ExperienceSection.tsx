@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { EXPERIENCES } from '../data/experience';
-import { TerminalIcon } from './Icons';
 import { TypewriterExperienceCard } from './TypewriterExperienceCard';
 
 export const ExperienceSection: React.FC = () => {
