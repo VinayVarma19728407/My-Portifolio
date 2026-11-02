@@ -1,7 +1,11 @@
 import React from 'react';
 import { GithubIcon, LinkedinIcon, LeetcodeIcon, MailIcon, MapPinIcon, TerminalIcon } from './Icons';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onNavigate: (section: string) => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   return (
     <section id="about" className="hero-section" aria-labelledby="hero-name">
       <div className="hero-container">
@@ -41,10 +45,21 @@ export const Hero: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="hero-actions">
-              <a href="#projects" className="btn btn-primary">
-                View Projects
-              </a>
-              <a href="#contact" className="btn btn-secondary">
+              <button
+                type="button"
+                onClick={() => onNavigate('projects')}
+                className="btn btn-primary"
+              >
+                View Projects →
+              </button>
+              <a
+                href="#contact"
+                className="btn btn-secondary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Get In Touch
               </a>
             </div>
