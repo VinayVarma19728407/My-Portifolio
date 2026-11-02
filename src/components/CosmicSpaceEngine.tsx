@@ -1,28 +1,31 @@
 import React, { useEffect, useRef } from 'react';
 
-export type CosmicMode = 'idle' | 'blank' | 'diving' | 'blackhole';
+export type CosmicMode = 'idle' | 'blank' | 'diving' | 'galaxies';
 
 interface CosmicSpaceEngineProps {
   mode: CosmicMode;
 }
 
-interface WarpStar {
+interface Star {
   x: number;
   y: number;
   z: number;
   pz: number;
   color: string;
   size: number;
+  twinklePhase: number;
+  twinkleSpeed: number;
 }
 
-interface InfallingFilament {
+interface GalaxyParticle {
+  galaxy: 1 | 2; // 1 = Golden Galaxy, 2 = Purple Galaxy
+  armIndex: number;
+  originalDist: number;
   angle: number;
-  radius: number;
   speed: number;
-  fallSpeed: number;
-  width: number;
   color: string;
-  length: number;
+  size: number;
+  offsetY: number;
 }
 
 export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) => {
@@ -45,43 +48,101 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
     };
     window.addEventListener('resize', handleResize);
 
-    // Warp Stars for the 2-second Space Dive
-    const goldTones = ['#ffd700', '#fbbf24', '#f59e0b', '#fef08a'];
-    const purpleTones = ['#c084fc', '#a855f7', '#8b5cf6', '#e879f9'];
-    const warpColors = [...goldTones, ...purpleTones, '#ffffff'];
+    // Realistic astronomical stellar colors: White, Blue, Red, Yellow
+    const starColors = [
+      '#ffffff', // White (A/O class)
+      '#f8fafc', // Bright White
+      '#60a5fa', // Blue (B class)
+      '#93c5fd', // Light Blue
+      '#ef4444', // Red (M class / Red Giant)
+      '#f87171', // Warm Red
+      '#facc15', // Yellow (G class / Solar)
+      '#fbbf24', // Amber Yellow
+    ];
 
-    const warpStars: WarpStar[] = [];
-    for (let i = 0; i < 500; i++) {
+    // Colors for the Space Dive warp strings (Gold and Purple)
+    const diveColors = [
+      '#ffd700', '#fbbf24', '#f59e0b', // Golden strings
+      '#c084fc', '#a855f7', '#8b5cf6', // Purple strings
+      '#ffffff',
+    ];
+
+    // 1. Background Realistic Stars
+    const backgroundStars: Star[] = [];
+    const starCount = 380;
+    for (let i = 0; i < starCount; i++) {
+      backgroundStars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        z: Math.random() * 1000 + 1,
+        pz: 1000,
+        color: starColors[Math.floor(Math.random() * starColors.length)],
+        size: Math.random() * 1.8 + 0.6,
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: Math.random() * 0.03 + 0.01,
+      });
+    }
+
+    // 2. Warp Stars for Space Dive
+    const warpStars: Star[] = [];
+    for (let i = 0; i < 480; i++) {
       warpStars.push({
         x: (Math.random() - 0.5) * width * 2.5,
         y: (Math.random() - 0.5) * height * 2.5,
         z: Math.random() * 1000 + 1,
         pz: 1000,
-        color: warpColors[Math.floor(Math.random() * warpColors.length)],
-        size: Math.random() * 2 + 0.8,
+        color: diveColors[Math.floor(Math.random() * diveColors.length)],
+        size: Math.random() * 2 + 1,
+        twinklePhase: 0,
+        twinkleSpeed: 0,
       });
     }
 
-    // Infalling light filaments being sucked into Interstellar Black Hole
-    const filaments: InfallingFilament[] = [];
-    const filamentColors = ['#fde047', '#fbbf24', '#f59e0b', '#fb923c', '#c084fc', '#a855f7'];
-    for (let i = 0; i < 220; i++) {
-      filaments.push({
-        angle: Math.random() * Math.PI * 2,
-        radius: Math.random() * 320 + 70,
-        speed: Math.random() * 0.03 + 0.015,
-        fallSpeed: Math.random() * 0.9 + 0.4,
-        width: Math.random() * 2.5 + 1,
-        color: filamentColors[Math.floor(Math.random() * filamentColors.length)],
-        length: Math.random() * 0.35 + 0.15,
+    // 3. Two Colliding Galaxies Simulation Particles
+    const galaxyParticles: GalaxyParticle[] = [];
+    const particlesPerGalaxy = 320;
+
+    // Galaxy 1: Golden / Amber Galaxy
+    const goldPalette = ['#ffd700', '#fbbf24', '#f59e0b', '#fef08a', '#ffffff'];
+    for (let i = 0; i < particlesPerGalaxy; i++) {
+      const arm = i % 2;
+      const dist = Math.pow(Math.random(), 0.7) * 220 + 8;
+      const baseAngle = arm * Math.PI + dist * 0.022;
+      galaxyParticles.push({
+        galaxy: 1,
+        armIndex: arm,
+        originalDist: dist,
+        angle: baseAngle + (Math.random() - 0.5) * 0.4,
+        speed: (0.012 - dist * 0.00003),
+        color: goldPalette[Math.floor(Math.random() * goldPalette.length)],
+        size: Math.random() * 2.2 + 0.8,
+        offsetY: (Math.random() - 0.5) * (dist * 0.22),
+      });
+    }
+
+    // Galaxy 2: Purple / Violet Galaxy
+    const purplePalette = ['#c084fc', '#a855f7', '#8b5cf6', '#e879f9', '#ffffff'];
+    for (let i = 0; i < particlesPerGalaxy; i++) {
+      const arm = i % 2;
+      const dist = Math.pow(Math.random(), 0.7) * 200 + 8;
+      const baseAngle = arm * Math.PI + dist * 0.024;
+      galaxyParticles.push({
+        galaxy: 2,
+        armIndex: arm,
+        originalDist: dist,
+        angle: baseAngle + (Math.random() - 0.5) * 0.45,
+        speed: (0.013 - dist * 0.000035),
+        color: purplePalette[Math.floor(Math.random() * purplePalette.length)],
+        size: Math.random() * 2.0 + 0.8,
+        offsetY: (Math.random() - 0.5) * (dist * 0.2),
       });
     }
 
     let diveSpeed = 1.0;
-    let accretionRotation = 0;
+    let collisionTime = 0;
 
     const render = () => {
-      // 1. PURE BLANK PHASE (300ms)
+      // 1. PURE BLANK SCREEN PHASE
       if (mode === 'blank') {
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, width, height);
@@ -89,7 +150,7 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
         return;
       }
 
-      // 2. SPACE DIVE (2 Seconds Strings of Golden & Purple Lights)
+      // 2. SPACE DIVE (2s Golden & Purple Warp Light Strings)
       if (mode === 'diving') {
         ctx.fillStyle = 'rgba(2, 1, 8, 0.28)';
         ctx.fillRect(0, 0, width, height);
@@ -133,7 +194,7 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
           }
         }
 
-        // Relativistic golden and purple shock rings
+        // Concentric warp shockwave rings
         const ringTime = Date.now() * 0.004;
         for (let r = 0; r < 3; r++) {
           const radius = ((ringTime + r * 1.5) * 260) % (width * 0.9);
@@ -148,134 +209,138 @@ export const CosmicSpaceEngine: React.FC<CosmicSpaceEngineProps> = ({ mode }) =>
         return;
       }
 
-      // 3. ENTERED PORTFOLIO: INTERSTELLAR "GARGANTUA" BLACK HOLE
-      ctx.fillStyle = 'rgba(2, 2, 7, 0.88)';
+      // 3. ENTERED PORTFOLIO: TWO COLLIDING GALAXIES (GOLDEN & PURPLE MERGER)
+      ctx.fillStyle = 'rgba(3, 3, 8, 0.88)';
       ctx.fillRect(0, 0, width, height);
 
-      // Black hole position
-      const bhX = width > 992 ? width * 0.76 : width * 0.5;
-      const bhY = width > 992 ? height * 0.42 : height * 0.26;
-      const R = width > 992 ? 65 : 48; // Event Horizon Radius
+      // (A) Realistic Multicolored Background Stars (White, Blue, Red, Yellow)
+      for (let i = 0; i < backgroundStars.length; i++) {
+        const star = backgroundStars[i];
+        star.twinklePhase += star.twinkleSpeed;
+        const alpha = 0.35 + 0.55 * Math.sin(star.twinklePhase);
 
-      // Stationary distant stars
-      for (let i = 0; i < 70; i++) {
-        const star = warpStars[i];
         ctx.beginPath();
-        ctx.arc((star.x + width) % width, (star.y + height) % height, star.size * 0.65, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fillStyle = star.color;
-        ctx.globalAlpha = 0.35;
+        ctx.globalAlpha = Math.max(0.15, alpha);
         ctx.fill();
         ctx.globalAlpha = 1.0;
       }
 
-      accretionRotation += 0.015;
+      // (B) Centers of the Two Colliding Galaxies
+      // Positioned gracefully in depth (on desktop, right side; on mobile, center top)
+      const centerX = width > 992 ? width * 0.74 : width * 0.5;
+      const centerY = width > 992 ? height * 0.46 : height * 0.28;
 
-      // INTERSTELLAR ACCRETION DISK GRAVITATIONAL LENSING:
-      // (1) Upper Lensed Arch (The back of the disk bent over the black hole)
-      ctx.save();
-      ctx.translate(bhX, bhY);
+      collisionTime += 0.008;
 
-      // Upper Arch
+      // Distance between galaxy nuclei (gravitational orbital dance)
+      const sepX = Math.cos(collisionTime * 0.6) * 110 + 20;
+      const sepY = Math.sin(collisionTime * 0.6) * 45;
+
+      const g1X = centerX - sepX * 0.5;
+      const g1Y = centerY - sepY * 0.5;
+
+      const g2X = centerX + sepX * 0.5;
+      const g2Y = centerY + sepY * 0.5;
+
+      // 1. Ambient Merging Nebular Glow
+      const mergerGlow = ctx.createRadialGradient(centerX, centerY, 20, centerX, centerY, 340);
+      mergerGlow.addColorStop(0, 'rgba(254, 240, 138, 0.14)');
+      mergerGlow.addColorStop(0.35, 'rgba(245, 158, 11, 0.08)');
+      mergerGlow.addColorStop(0.65, 'rgba(168, 85, 247, 0.08)');
+      mergerGlow.addColorStop(1, 'transparent');
+      ctx.fillStyle = mergerGlow;
       ctx.beginPath();
-      ctx.ellipse(0, -R * 0.15, R * 2.5, R * 1.6, 0, Math.PI, 0);
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.38)';
-      ctx.lineWidth = R * 0.42;
-      ctx.shadowColor = '#fbbf24';
-      ctx.shadowBlur = 24;
+      ctx.arc(centerX, centerY, 340, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Gravitational Tidal Bridge between the two galaxies
+      ctx.beginPath();
+      ctx.moveTo(g1X, g1Y);
+      ctx.bezierCurveTo(
+        centerX, centerY - 60,
+        centerX, centerY + 60,
+        g2X, g2Y
+      );
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.16)';
+      ctx.lineWidth = 42;
       ctx.stroke();
 
-      ctx.beginPath();
-      ctx.ellipse(0, -R * 0.15, R * 2.3, R * 1.45, 0, Math.PI, 0);
-      ctx.strokeStyle = 'rgba(254, 240, 138, 0.7)';
-      ctx.lineWidth = R * 0.18;
-      ctx.stroke();
+      // 3. Render Galaxy 1 (Golden Spiral Galaxy) Particles
+      const g1Tilt = 0.52; // 3D tilt
+      for (let i = 0; i < galaxyParticles.length; i++) {
+        const p = galaxyParticles[i];
+        if (p.galaxy === 1) {
+          p.angle += p.speed;
 
-      // Lower Lensed Arch (The bottom reflection)
-      ctx.beginPath();
-      ctx.ellipse(0, R * 0.15, R * 2.4, R * 1.5, 0, 0, Math.PI);
-      ctx.strokeStyle = 'rgba(217, 119, 6, 0.32)';
-      ctx.lineWidth = R * 0.35;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+          // Gravitational pull / tidal distortion from Galaxy 2
+          const localX = Math.cos(p.angle) * p.originalDist;
+          const localY = Math.sin(p.angle) * p.originalDist * g1Tilt + p.offsetY;
 
-      // (2) Swirling Light Infalling Streams (Being sucked inward)
-      for (let i = 0; i < filaments.length; i++) {
-        const f = filaments[i];
-        f.angle += f.speed;
-        // Gravitational pull increases sharply near horizon
-        const pull = 1 + (R * 2) / (f.radius + 10);
-        f.radius -= f.fallSpeed * pull * 0.5;
+          // Tidal tail elongation towards second galaxy
+          const worldX = g1X + localX;
+          const worldY = g1Y + localY;
 
-        // Reset once crossing the event horizon
-        if (f.radius <= R * 1.05) {
-          f.radius = Math.random() * 260 + R * 2.2;
-          f.angle = Math.random() * Math.PI * 2;
+          ctx.beginPath();
+          ctx.arc(worldX, worldY, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = '#fbbf24';
+          ctx.shadowBlur = p.originalDist < 40 ? 10 : 3;
+          ctx.fill();
+          ctx.shadowBlur = 0;
         }
-
-        const startX = Math.cos(f.angle) * f.radius;
-        const startY = Math.sin(f.angle) * (f.radius * 0.28);
-
-        const endAngle = f.angle + f.length;
-        const endRadius = f.radius - 8;
-        const endX = Math.cos(endAngle) * endRadius;
-        const endY = Math.sin(endAngle) * (endRadius * 0.28);
-
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(endX, endY);
-        ctx.strokeStyle = f.color;
-        // Doppler effect: brighter on left (approaching) side
-        const doppler = Math.cos(f.angle) < 0 ? 0.9 : 0.4;
-        ctx.globalAlpha = doppler;
-        ctx.lineWidth = f.width;
-        ctx.stroke();
-        ctx.globalAlpha = 1.0;
       }
 
-      // (3) Front Equatorial Accretion Disk (Cutting directly across the middle)
+      // 4. Render Galaxy 2 (Purple Spiral Galaxy) Particles
+      const g2Tilt = 0.48; // Opposing 3D tilt
+      for (let i = 0; i < galaxyParticles.length; i++) {
+        const p = galaxyParticles[i];
+        if (p.galaxy === 2) {
+          p.angle += p.speed;
+
+          const localX = Math.cos(p.angle + 0.8) * p.originalDist;
+          const localY = Math.sin(p.angle + 0.8) * p.originalDist * g2Tilt + p.offsetY;
+
+          const worldX = g2X + localX;
+          const worldY = g2Y + localY;
+
+          ctx.beginPath();
+          ctx.arc(worldX, worldY, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.shadowColor = '#c084fc';
+          ctx.shadowBlur = p.originalDist < 40 ? 10 : 3;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      // 5. Luminous Core 1 (Golden Galaxy Nucleus)
+      const core1Grad = ctx.createRadialGradient(g1X, g1Y, 2, g1X, g1Y, 35);
+      core1Grad.addColorStop(0, '#ffffff');
+      core1Grad.addColorStop(0.3, '#fde047');
+      core1Grad.addColorStop(0.7, '#f59e0b');
+      core1Grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = core1Grad;
       ctx.beginPath();
-      ctx.ellipse(0, 0, R * 3.4, R * 0.48, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(245, 158, 11, 0.18)';
+      ctx.arc(g1X, g1Y, 35, 0, Math.PI * 2);
       ctx.fill();
 
-      // Intense central equatorial light bar
-      const diskGrad = ctx.createLinearGradient(-R * 3, 0, R * 3, 0);
-      diskGrad.addColorStop(0, 'rgba(168, 85, 247, 0.1)');
-      diskGrad.addColorStop(0.3, 'rgba(254, 240, 138, 0.85)'); // Relativistic beaming (bright side)
-      diskGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.9)');
-      diskGrad.addColorStop(0.8, 'rgba(245, 158, 11, 0.5)');
-      diskGrad.addColorStop(1, 'rgba(168, 85, 247, 0.1)');
-
+      // 6. Luminous Core 2 (Purple Galaxy Nucleus)
+      const core2Grad = ctx.createRadialGradient(g2X, g2Y, 2, g2X, g2Y, 32);
+      core2Grad.addColorStop(0, '#ffffff');
+      core2Grad.addColorStop(0.3, '#e879f9');
+      core2Grad.addColorStop(0.7, '#8b5cf6');
+      core2Grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = core2Grad;
       ctx.beginPath();
-      ctx.ellipse(0, 0, R * 3.1, R * 0.22, 0, 0, Math.PI * 2);
-      ctx.fillStyle = diskGrad;
-      ctx.shadowColor = '#fbbf24';
-      ctx.shadowBlur = 20;
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // (4) Photosphere Glow Ring (The glowing edge of the black hole)
-      ctx.beginPath();
-      ctx.arc(0, 0, R * 1.06, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(254, 240, 138, 0.95)';
-      ctx.lineWidth = 3.5;
-      ctx.shadowColor = '#fde047';
-      ctx.shadowBlur = 18;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // (5) The Pure Black Event Horizon (The central shadow of Gargantua)
-      ctx.beginPath();
-      ctx.arc(0, 0, R, 0, Math.PI * 2);
-      ctx.fillStyle = '#000000';
+      ctx.arc(g2X, g2Y, 32, 0, Math.PI * 2);
       ctx.fill();
 
-      // Telemetry badge
+      // 7. Telemetry Identifier Tag for Colliding Galaxies
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
-      ctx.fillText('GARGANTUA // EVENT HORIZON', -75, R + 34);
-
-      ctx.restore();
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.65)';
+      ctx.fillText('COLLIDING_GALAXIES // GRAVITATIONAL_MERGER', centerX - 120, centerY + 130);
 
       animId = requestAnimationFrame(render);
     };

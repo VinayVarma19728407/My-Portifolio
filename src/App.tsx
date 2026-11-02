@@ -18,32 +18,31 @@ export const App: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
 
   const handleStartDive = () => {
-    // 1. First become completely blank for 300ms
+    // 1. First become completely pitch black / blank for 350ms
     setCosmicMode('blank');
 
     setTimeout(() => {
-      // 2. Space dive for around 2 seconds (2000ms) with golden & purple light strings
+      // 2. Space dive for 2 seconds (2000ms) with golden & purple light strings
       setCosmicMode('diving');
 
       setTimeout(() => {
-        // 3. Enter portfolio & switch background to Black Hole sucking light inward
+        // 3. Enter portfolio & switch background to Two Colliding Galaxies
         setPortalEntered(true);
-        setCosmicMode('blackhole');
+        setCosmicMode('galaxies');
       }, 2000);
-    }, 300);
+    }, 350);
   };
 
   const handleSectionSwitch = (newSection: string) => {
     if (newSection === activeSection) return;
 
-    // Start sleek cybernetic wipe transition (blank out)
+    // Sleek cybernetic wipe transition (blank out)
     setIsTransitioning(true);
 
     setTimeout(() => {
       setActiveSection(newSection);
       window.scrollTo({ top: 0, behavior: 'instant' });
 
-      // Unblank and begin live typewriter stream
       setTimeout(() => {
         setIsTransitioning(false);
       }, 350);
@@ -52,12 +51,16 @@ export const App: React.FC = () => {
 
   return (
     <div className="portfolio-app space-theme">
-      {/* 3D Cosmic Space Engine: Handles Blank -> 2s Golden/Purple Warp Dive -> Black Hole Sucking Light */}
+      {/* 3D Cosmic Space Engine: Blank -> 2s Golden/Purple Warp Dive -> Colliding Galaxies Merger */}
       <CosmicSpaceEngine mode={cosmicMode} />
 
       {/* Grandeur Entrance Webpage / Space Dive Trigger */}
       {!portalEntered && (
-        <IntroPortal isDiving={cosmicMode === 'diving' || cosmicMode === 'blank'} onStartDive={handleStartDive} />
+        <IntroPortal
+          isDiving={cosmicMode === 'diving'}
+          isBlank={cosmicMode === 'blank'}
+          onStartDive={handleStartDive}
+        />
       )}
 
       {/* Main Interactive System Workspace */}
@@ -82,7 +85,7 @@ export const App: React.FC = () => {
 
           <main id="main-content" className={`main-stage ${isTransitioning ? 'stage-blanked' : 'stage-active'}`} tabIndex={-1}>
             
-            {/* 1. ABOUT VIEW: Shows Hero with Avatar, Bio, Status, and Contact */}
+            {/* 1. ABOUT VIEW: Live Typewriter Model for Name, Subtitle, and Bio */}
             {activeSection === 'about' && (
               <div className="about-view-container">
                 <Hero onNavigate={handleSectionSwitch} />

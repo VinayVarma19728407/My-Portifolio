@@ -6,26 +6,65 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  // Sequence stages:
-  // stage 1: Only name is visible
-  // stage 2: (after 2s) Content below it appears
-  // stage 3: (after another 2s) Picture appears
-  const [stage, setStage] = useState<number>(1);
+  const fullName = "Ganapathiraju Vinay Kumar Varma";
+  const fullSubtitle = "Software & Machine Learning Engineer • B.Tech CSE (AIML) @ VIT Chennai";
+  const fullBio = "I specialize in engineering scalable 3-tier platforms, reinforcement learning schedulers, and explainable AI systems. I combine practical industrial data engineering (RINL Vizag Steel Plant) with modern software development and rigorous machine learning research.";
+
+  const [typedName, setTypedName] = useState('');
+  const [typedSubtitle, setTypedSubtitle] = useState('');
+  const [typedBio, setTypedBio] = useState('');
+
+  const [nameDone, setNameDone] = useState(false);
+  const [subtitleDone, setSubtitleDone] = useState(false);
+  const [bioDone, setBioDone] = useState(false);
+  const [photoReady, setPhotoReady] = useState(false);
 
   useEffect(() => {
-    // Stage 1 -> Stage 2 after 2000ms
-    const timer1 = setTimeout(() => {
-      setStage(2);
+    // 1. Type Name character-by-character
+    let nameIdx = 0;
+    const nameTimer = setInterval(() => {
+      if (nameIdx < fullName.length) {
+        setTypedName(fullName.substring(0, nameIdx + 1));
+        nameIdx++;
+      } else {
+        clearInterval(nameTimer);
+        setNameDone(true);
 
-      // Stage 2 -> Stage 3 after another 2000ms
-      const timer2 = setTimeout(() => {
-        setStage(3);
-      }, 2000);
+        // 2. Type Subtitle character-by-character
+        let subIdx = 0;
+        const subTimer = setInterval(() => {
+          if (subIdx < fullSubtitle.length) {
+            setTypedSubtitle(fullSubtitle.substring(0, subIdx + 2));
+            subIdx += 2;
+          } else {
+            clearInterval(subTimer);
+            setSubtitleDone(true);
 
-      return () => clearTimeout(timer2);
-    }, 2000);
+            // 3. Type Bio character-by-character
+            let bioIdx = 0;
+            const bioTimer = setInterval(() => {
+              if (bioIdx < fullBio.length) {
+                setTypedBio(fullBio.substring(0, bioIdx + 4));
+                bioIdx += 4;
+              } else {
+                clearInterval(bioTimer);
+                setTypedBio(fullBio);
+                setBioDone(true);
 
-    return () => clearTimeout(timer1);
+                // 4. Reveal photograph smoothly (without any time text)
+                setTimeout(() => {
+                  setPhotoReady(true);
+                }, 200);
+              }
+            }, 12);
+          }
+        }, 16);
+      }
+    }, 25);
+
+    return () => {
+      clearInterval(nameTimer);
+    };
   }, []);
 
   return (
@@ -33,34 +72,40 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <div className="hero-container">
         <div className="hero-grid">
           
-          {/* Left Column: Text & Sequential Content */}
+          {/* Left Column: Sequential Live Typing Model */}
           <div className="hero-content">
             
-            {/* STAGE 1: Name appears first */}
-            <div className="hero-name-container animate-fade-in">
-              <div className="status-badge-container">
-                <span className="live-pulse-dot" aria-hidden="true"></span>
-                <span className="status-badge-text">Available for Software & Machine Learning Roles</span>
-              </div>
-
-              <h1 id="hero-name" className="hero-title">
-                Hi, I'm <span className="text-gradient">Ganapathiraju Vinay Kumar Varma</span>
-              </h1>
+            {/* Status Badge */}
+            <div className="status-badge-container">
+              <span className="live-pulse-dot" aria-hidden="true"></span>
+              <span className="status-badge-text">Available for Software & Machine Learning Roles</span>
             </div>
 
-            {/* STAGE 2: Content below it appears after 2s delay */}
-            {stage >= 2 && (
-              <div className="hero-subcontent animate-fade-in">
-                <p className="hero-subtitle">
-                  Software & Machine Learning Engineer • B.Tech CSE (AIML) @ VIT Chennai
-                </p>
+            {/* 1. Name typing model */}
+            <h1 id="hero-name" className="hero-title">
+              Hi, I'm <span className="text-white-glow">{typedName}</span>
+              {!nameDone && <span className="blinking-cursor">█</span>}
+            </h1>
 
-                <p className="hero-bio">
-                  I specialize in engineering scalable 3-tier platforms, reinforcement learning schedulers, 
-                  and explainable AI systems. I combine practical industrial data engineering (RINL Vizag Steel Plant) 
-                  with modern software development and rigorous machine learning research.
-                </p>
+            {/* 2. Subtitle typing model */}
+            {nameDone && (
+              <p className="hero-subtitle">
+                {typedSubtitle}
+                {!subtitleDone && <span className="blinking-cursor">█</span>}
+              </p>
+            )}
 
+            {/* 3. Bio typing model */}
+            {subtitleDone && (
+              <p className="hero-bio">
+                {typedBio}
+                {!bioDone && <span className="blinking-cursor">█</span>}
+              </p>
+            )}
+
+            {/* 4. Metadata, Buttons, and Socials when bio typing is complete */}
+            {bioDone && (
+              <div className="hero-actions-container animate-fade-in">
                 <div className="hero-meta-row">
                   <div className="meta-item">
                     <MapPinIcon size={16} className="meta-icon" />
@@ -140,36 +185,28 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             )}
           </div>
 
-          {/* Right Column: Polished Photo Frame - STAGE 3: Appears after another 2s delay */}
+          {/* Right Column: Photograph - Materializes cleanly without any countdown time text */}
           <div className="hero-visual">
-            {stage >= 3 ? (
-              <div className="photo-card animate-fade-in">
-                <div className="photo-frame">
-                  <img
-                    src="/assets/avatar.jpg"
-                    alt="Ganapathiraju Vinay Kumar Varma"
-                    className="photo-img"
-                    width="400"
-                    height="480"
-                    loading="eager"
-                  />
-                </div>
+            <div className={`photo-card ${photoReady ? 'photo-visible' : 'photo-hidden'}`}>
+              <div className="photo-frame">
+                <img
+                  src="/assets/avatar.jpg"
+                  alt="Ganapathiraju Vinay Kumar Varma"
+                  className="photo-img"
+                  width="400"
+                  height="480"
+                  loading="eager"
+                />
+              </div>
 
-                {/* Photo Overlay Caption */}
-                <div className="photo-badge">
-                  <div className="photo-badge-inner">
-                    <span className="photo-badge-title">Ganapathiraju Vinay Kumar Varma</span>
-                    <span className="photo-badge-sub">VIT Chennai • Expected May 2028</span>
-                  </div>
+              {/* Photo Overlay Caption */}
+              <div className="photo-badge">
+                <div className="photo-badge-inner">
+                  <span className="photo-badge-title">Ganapathiraju Vinay Kumar Varma</span>
+                  <span className="photo-badge-sub">VIT Chennai • Expected May 2028</span>
                 </div>
               </div>
-            ) : (
-              <div className="photo-card-placeholder">
-                <span className="photo-placeholder-text">
-                  {stage === 1 ? '[INITIALIZING IDENTITY PROFILE...]' : '[MATERIALIZING VISUAL MATRIX IN 2s...]'}
-                </span>
-              </div>
-            )}
+            </div>
           </div>
 
         </div>

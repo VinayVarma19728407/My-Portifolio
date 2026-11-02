@@ -3,21 +3,27 @@ import { TerminalIcon, ExternalLinkIcon } from './Icons';
 
 interface IntroPortalProps {
   isDiving: boolean;
+  isBlank: boolean;
   onStartDive: () => void;
 }
 
-export const IntroPortal: React.FC<IntroPortalProps> = ({ isDiving, onStartDive }) => {
+export const IntroPortal: React.FC<IntroPortalProps> = ({ isDiving, isBlank, onStartDive }) => {
+  // If blank or diving, hide portal completely so screen is 100% black / space dive
+  if (isBlank || isDiving) {
+    return null;
+  }
+
   return (
-    <div className={`portal-overlay ${isDiving ? 'portal-diving' : ''}`}>
+    <div className="portal-overlay">
       <div className="portal-container">
         {/* Top Cosmic Telemetry Tag */}
         <div className="portal-telemetry">
           <span className="telemetry-item">
             <span className="pulse-gold" aria-hidden="true"></span>
-            COSMIC_CORE // V.2026
+            COSMIC_EXPEDITION // 2026
           </span>
           <span className="telemetry-item">COORDINATES: VIT CHENNAI • VIZAG</span>
-          <span className="telemetry-item">STATUS: READY FOR WARP</span>
+          <span className="telemetry-item">STATUS: WARP READY</span>
         </div>
 
         {/* Central Space HUD Card */}
@@ -29,7 +35,7 @@ export const IntroPortal: React.FC<IntroPortalProps> = ({ isDiving, onStartDive 
 
           <div className="portal-badge">
             <TerminalIcon size={14} />
-            <span>DEEP TECH SPACE DIVE // READY</span>
+            <span>INTERACTIVE PORTFOLIO SYSTEM</span>
           </div>
 
           <h1 className="portal-title">
@@ -42,37 +48,27 @@ export const IntroPortal: React.FC<IntroPortalProps> = ({ isDiving, onStartDive 
           </p>
 
           <p className="portal-description">
-            Interactive system architecture, reinforcement learning CPU optimization, and explainable AI systems.
+            Scalable full-stack systems, reinforcement learning CPU scheduling, and explainable AI applications.
           </p>
 
           {/* Space Dive Trigger Button */}
           <div className="portal-actions">
             <button
               type="button"
-              className={`dive-btn ${isDiving ? 'btn-active' : ''}`}
+              className="dive-btn"
               onClick={onStartDive}
-              disabled={isDiving}
               aria-label="Enter Space Dive"
             >
               <span className="dive-glow"></span>
               <span className="dive-btn-content">
-                {isDiving ? (
-                  <>
-                    <span className="dive-spinner"></span>
-                    <span>WARPING INTO DEEP SPACE...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>INITIALIZE SPACE DIVE</span>
-                    <ExternalLinkIcon size={16} />
-                  </>
-                )}
+                <span>INITIALIZE SPACE DIVE</span>
+                <ExternalLinkIcon size={16} />
               </span>
             </button>
           </div>
 
           <div className="portal-hint">
-            Step through strings of golden & purple lights to unlock live-streamed portfolio
+            Click to plunge through strings of golden & purple lights into colliding galaxies
           </div>
         </div>
       </div>
